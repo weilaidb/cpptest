@@ -16,6 +16,7 @@ class vector_all
 {
 public:
     vector_all();
+    void size();
 };
 
 

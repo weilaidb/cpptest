@@ -20,6 +20,11 @@ public:
 
     }
 
+    Sales_data(const char *name, int sold, double revence)
+        :bookNo(name), units_sold(sold), revenue(revence)
+    {
+
+    }
     // 读取到当前对象中
     Sales_data(istream &is)
     {
