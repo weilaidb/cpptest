@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <vector>
+#include <ostream>
 #include "io.h"
 #include "sales_data.h"
 
@@ -172,7 +174,176 @@ void io::file_ops()
     }
 
 	
+
+
+
+
+
+
+
+
+
+
+
+//related files
+    string ifile("test");
+    ifstream in(ifile);
+    ofstream out;
+    out.open(ifile + ".copy");
+    if (out) //open ok
+    {
+    	cout << "out open ok" << ends;
+    }
+    else
+    {
+    	cout << "out open err" << ends;
+    }
+
+
+
+
+////auto testing
+//    for (auto p = argv + 1; p != argv + argc ; ++p)
+//    {
+//    	ifstream input (*p); //当fstream对象被销毁时，close会自动被调用
+//    	if (input)
+//    	{
+//    		process(input);
+//    	}
+//    	else
+//    	{
+//    		cerr << "couldn't open: " + string (*p);
+//    	}
+//    }
+
+
+    /*file mode
+    in      读
+    out     写
+    app     每次写操作前均定位到文件末尾
+    ate     打开文件后立即定位到文件末尾
+    trunc   截断文件
+    binary  以二进制方式进行IO
+*/
+
+    //以out模式打开文件会丢弃已有数据
+    ofstream outt("file1");
+    ofstream out2("file2", ofstream::out);
+    ofstream out3("file3", ofstream::out | ofstream::trunc);
+    
+    //为保留文件内容，须发显示指定app模式
+    ofstream app("afile1", ofstream::app);
+    ofstream app2("afile2", ofstream::out | ofstream::app);
+
+
+
+
+    ofstream outs; //未指定文件打开模式
+    outs.open("scratchpad"); //模式隐含设置为输出和截断
+    out.close();
+    out.open("precious", ofstream::app); //模式为输出和追加
+    out.close();
+
+    /*
+在每次打开文件时，都要设置文件模式，可能是显示式设置，也可能是隐式地设置。
+当程序未指定时，就使用默认值。
+*/
+
+
 }
+
+
+void io::string_objs()
+{
+	/*
+	sstream strm;   //未绑定的stringstream对象。
+	sstream strm2(s); //strm2是一个sstream对象，保存string s的拷贝。此构造函数是explicit的
+	strm.str(); //返回strm所保存的string拷贝
+	strm2.str(s); //将string s拷贝到strm中，返回void
+*/
+
+}
+
+
+struct PersonInfo{
+	string name;
+    vector<string> phones;
+};
+
+
+void io::string_phones()
+{
+    string line, word;
+    vector<PersonInfo> people;
+    string ifile("phones.txt");
+    ifstream input(ifile);
+
+    while(getline(input, line))
+    {
+        PersonInfo info;
+        istringstream record(line);
+        record >> info.name;
+        while(record >> word)
+        {
+            info.phones.push_back(word);
+        }
+        cout << "he has " << info.phones.size() << endl;
+        people.push_back(info);
+    }
+
+    cout << "we have "<< people.size()  << " people "<< endl;
+
+
+    for (const auto &entry : people )
+    {
+    	ostringstream formatted, badNums;
+    	for (const auto &nums : entry.phones)
+    	{
+            if (/*valid*/(nums.empty()))
+    		{
+    			badNums << " " << nums;
+    		}
+    		else
+    		{
+                formatted << " " << /*format*/(nums);
+    		}
+
+            if (badNums.str().empty())
+    		{
+                cout << entry.name << " "
+    				<< formatted.str() << endl;
+    		}
+    		else
+    		{
+    			cerr << "input error: " << entry.name 
+    				<< "invalid number(s) " << badNums.str() << endl;
+    		}
+    	}
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -10,6 +10,7 @@ int main()
     io iot;
     iot.obj_copy();
     iot.file_ops();
+    iot.string_phones();
     return 0;
 }
 
